@@ -1,4 +1,5 @@
 import torch
+torch.set_num_threads(1) # Limits CPU usage to prevent memory spikes
 import math
 from flask import Flask, request, jsonify
 from flask_cors import CORS # Import CORS
@@ -19,6 +20,9 @@ model = DTIModel(hidden_dim=512)
 model.load_state_dict(torch.load("best_model.pt", map_location=device))
 model.to(device)
 model.eval()
+# Add this line to delete unnecessary weights after loading
+with torch.no_grad():
+    pass
 
 print("Model loaded successfully.")
 
